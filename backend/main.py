@@ -1,12 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.scenarios import router as scenarioRouter
+from routes.plants import router as plantsRouter
 
 
 app = FastAPI()
-
-
-
 
 origins = [
     "http://localhost",
@@ -25,3 +23,4 @@ app.add_middleware(
 )
 
 app.include_router(scenarioRouter)
+app.include_router(plantsRouter)

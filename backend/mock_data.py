@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 # All constants sourced from Wu et al. 2024 (SI_XW_2020.pdf) and MECAQC zip.
 # Table references are to SI_XW_2020.pdf unless otherwise noted.
 # NOx and PM25 control efficiencies from Holloway control table (not in paper).
@@ -206,6 +207,7 @@ stateEnergyConstants = {
 
 SUPPORTED_STATES = set(bptByState.keys())
 
-plantsDF = pd.read_csv("data/plants.csv")
+current_dir = Path(__file__).resolve().parent
+plantsDF = pd.read_csv(current_dir / "data/plants.csv")
 plantsDF = plantsDF.set_index("facilityID")
 plants = plantsDF.to_dict("index")
