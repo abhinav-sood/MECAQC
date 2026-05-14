@@ -11,6 +11,5 @@ merged = pd.merge(plants_df, eia_df[['Plant Code', 'Latitude', 'Longitude']],
                   how='left')
 
 
-merged.to_csv(current_dir / '../backend/data/plants.csv')
-merged = merged.drop(columns=['Plant Code'])
+merged.to_csv(current_dir / '../backend/data/plants.csv', index=False)
 print(f'Done. {len(merged)} plants written.')

@@ -19,5 +19,5 @@ aggregated = df.groupby('Facility ID').agg(
 ).reset_index(drop=True)
 
 
-aggregated.to_csv('../backend/data/plants.csv')
+aggregated.to_csv('../backend/data/plants.csv', index=False)
 print(f'Done. {len(aggregated)} plants written.')
