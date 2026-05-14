@@ -13,7 +13,6 @@ const FIELDS = [
   { name: 'baselineNOx',     label: 'Baseline NOₓ',       hint: 'short tons/yr',         placeholder: 'e.g. 227',     half: true, type: "number"  },
   { name: 'baselinePM25',    label: 'Baseline PM₂.₅',     hint: 'short tons/yr',         placeholder: 'e.g. 71.6',    half: true, type: "number"  },
   { name: 'baselineVOC',     label: 'Baseline VOC',       hint: 'short tons/yr',         placeholder: 'e.g. 4.1',     half: true, type: "number"  },
-  
   { name: 'baselineCO2',     label: 'Baseline CO₂',       hint: 'short tons/yr',         placeholder: 'e.g. 164046',  half: false, type: "number"},
 
 ];
