@@ -1,10 +1,11 @@
 from mock_data import *
 from schema import *
+from fastapi import HTTPException
 import math
 
 def calculateAllScenarios(input: PlantInput) -> AllScenariosResult:
     if input.state not in SUPPORTED_STATES:
-        raise ValueError(f"State '{input.state}' is not supported.")
+        raise HTTPException(status_code=422, detail=f"State '{input.state}' is not supported.")
 
     return AllScenariosResult(
         bau=calculateBAU(input),
@@ -173,7 +174,6 @@ def calculateGT(input: PlantInput) -> ScenarioResult:
     netBenefit   = calculateNetBenefits(reductions, input.state, tacGT)
     totalBenefit = netBenefit + tacGT
 
-    print(f"[GT] netBenefit: {netBenefit:,.2f}  (target: 52,294,614)")
 
     return ScenarioResult(
         scenario="GT",

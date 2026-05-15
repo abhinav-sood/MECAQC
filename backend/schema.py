@@ -1,17 +1,18 @@
 from pydantic import BaseModel
+from pydantic import Field
 
 class PlantInput(BaseModel):
     state: str
-    capacity: int           # MW
-    annualGeneration: float # MWh
-    heatInput: float        # MMBtu/yr
-    SO2Rate: float    # llbs/MMBtu
-    operatingHours: float   # hours/yr
-    baselineSO2: float      # tons/yr
-    baselineNOx: float      # tons/yr
-    baselinePM25: float     # tons/yr
-    baselineVOC: float      # tons/yr
-    baselineCO2: float      # tons/yr
+    capacity: int = Field(gt=0)          # MW
+    annualGeneration: float = Field(gt=0)# MWh
+    heatInput: float = Field(gt=0)       # MMBtu/yr
+    SO2Rate: float = Field(gt=0)  # llbs/MMBtu
+    operatingHours: float = Field(gt=0)   # hours/yr
+    baselineSO2: float = Field(gt=0)      # tons/yr
+    baselineNOx: float = Field(gt=0)      # tons/yr
+    baselinePM25: float = Field(gt=0)     # tons/yr
+    baselineVOC: float = Field(gt=0)      # tons/yr
+    baselineCO2: float = Field(gt=0)      # tons/yr
     
 
 class ReductionOutput(BaseModel):
