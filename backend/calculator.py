@@ -205,7 +205,7 @@ def calculateRT(input: PlantInput) -> ScenarioResult:
     tacRT = (
         (CAP_SOLAR * ec["cost_aj_solar"] * capacitySolar * 1000
         + CAP_WIND * ec["cost_aj_wind"] * capacityWind * 1000) * ANNUALIZATION
-        + (OM_SOLAR_FIXED * capacitySolar * 1000 + OM_WIND_FIXED * capacityWind * 1000)
+        + (OM_SOLAR_FIXED * capacitySolar * 1000 * ec["cost_aj_solar"] + OM_WIND_FIXED * capacityWind * 1000 * ec["cost_aj_wind"])
         - tacBAU
     )
 
@@ -220,7 +220,7 @@ def calculateRT(input: PlantInput) -> ScenarioResult:
 
     netBenefit   = calculateNetBenefits(reductions, input.state, tacRT)
     totalBenefit = netBenefit + tacRT
-
+    
     return ScenarioResult(
         scenario="RT",
         reductions=reductions,
