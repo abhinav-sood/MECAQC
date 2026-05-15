@@ -149,7 +149,12 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
     for(const field of FIELDS)
     {
       const value = formData[field.name]
-      if(value == "" || (field.type == "number" && Number.isFinite(Number(value)) == false))
+      if
+      (
+        value == "" || 
+        (field.type == "number" && Number.isFinite(Number(value)) == false) || 
+        (field.type == "number" && Number(value) <= 0)
+      )
       {
         setError("Please fill in all fields with valid numbers.")
         return;
