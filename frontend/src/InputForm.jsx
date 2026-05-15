@@ -113,7 +113,6 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
   const [focusedField, setFocusedField] = useState(null);
   useEffect(() => {
     if (!plantMeta) return;
-    console.log(plantMeta)
     setFormData({
         state: plantMeta.state,
         capacity: plantMeta.capacity,
@@ -171,6 +170,8 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
           capacity: parseInt(formData.capacity),
           heatInput: Number(formData.heatInput),
           annualGeneration: Number(formData.annualGeneration),
+          SO2Rate: Number(formData.SO2Rate),
+          operatingHours: Number(formData.operatingHours),
           baselineSO2: Number(formData.baselineSO2),
           baselineNOx: Number(formData.baselineNOx),
           baselinePM25: Number(formData.baselinePM25),

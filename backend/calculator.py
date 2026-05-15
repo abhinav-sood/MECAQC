@@ -174,7 +174,6 @@ def calculateGT(input: PlantInput) -> ScenarioResult:
     netBenefit   = calculateNetBenefits(reductions, input.state, tacGT)
     totalBenefit = netBenefit + tacGT
 
-    print(f"[GT] netBenefit: {netBenefit:,.2f}  (target: 52,294,614)")
 
     return ScenarioResult(
         scenario="GT",
