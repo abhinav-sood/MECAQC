@@ -21,18 +21,44 @@ class Scenario(Base):
     baselineCO2 = Column(Float)
 
     
-    bau_totalBenefit = Column(Float)
-    bau_totalAnnualCost = Column(Float)
-    bau_netBenefit = Column(Float)
+    bau_totalBenefit = Column(Float, nullable=True)
+    bau_totalAnnualCost = Column(Float, nullable=True)
+    bau_netBenefit = Column(Float, nullable=True)
 
-    gt_totalBenefit = Column(Float)
-    gt_totalAnnualCost = Column(Float)
-    gt_netBenefit = Column(Float)
+    gt_totalBenefit = Column(Float, nullable=True)
+    gt_totalAnnualCost = Column(Float, nullable=True)
+    gt_netBenefit = Column(Float, nullable=True)
 
-    rt_totalBenefit = Column(Float)
-    rt_totalAnnualCost = Column(Float)
-    rt_netBenefit = Column(Float)
+    rt_totalBenefit = Column(Float, nullable=True)
+    rt_totalAnnualCost = Column(Float, nullable=True)
+    rt_netBenefit = Column(Float, nullable=True)
 
-    ac_totalBenefit = Column(Float)
-    ac_totalAnnualCost = Column(Float)
-    ac_netBenefit = Column(Float)
+    ac_totalBenefit = Column(Float, nullable=True)
+    ac_totalAnnualCost = Column(Float, nullable=True)
+    ac_netBenefit = Column(Float, nullable=True)
+
+    bau_so2_change = Column(Float, nullable = True)
+    bau_nox_change = Column(Float, nullable = True)
+    bau_pm25_change = Column(Float, nullable = True)
+    bau_voc_change = Column(Float, nullable = True)
+    bau_co2_change = Column(Float, nullable = True)
+    
+    ac_so2_change = Column(Float, nullable = True)
+    ac_nox_change = Column(Float, nullable = True)
+    ac_pm25_change = Column(Float, nullable = True)
+    ac_voc_change = Column(Float, nullable = True)
+    ac_co2_change = Column(Float, nullable = True)
+
+    gt_so2_change = Column(Float, nullable = True)
+    gt_nox_change = Column(Float, nullable = True)
+    gt_pm25_change = Column(Float, nullable = True)
+    gt_voc_change = Column(Float, nullable = True)
+    gt_co2_change = Column(Float, nullable = True)
+
+    rt_so2_change = Column(Float, nullable = True)
+    rt_nox_change = Column(Float, nullable = True)
+    rt_pm25_change = Column(Float, nullable = True)
+    rt_voc_change = Column(Float, nullable = True)
+    rt_co2_change = Column(Float, nullable = True)
+
+
