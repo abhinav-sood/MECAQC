@@ -169,9 +169,14 @@ export default function App() {
   const [view, setView]           = useState(VIEW.LANDING);
   const [results, setResults]     = useState(null);
   const [plantMeta, setPlantMeta] = useState(null);
+  const [plantInput, setPlantInput] = useState(null); 
 
   function handleResults(data, meta) {
-    if (meta) setPlantMeta(meta);
+    if (meta) 
+      {
+        setPlantMeta(meta);
+        setPlantInput(meta); 
+      }
     if (data) {
       setResults(data);
       setView(VIEW.RESULTS);
@@ -193,7 +198,7 @@ export default function App() {
   }
 
   const rightPanel =
-    view === VIEW.RESULTS ? <ResultsPanel results={results} plantMeta={plantMeta} /> :
+    view === VIEW.RESULTS ? <ResultsPanel results={results} plantMeta={plantMeta} plantInput={plantInput}/> :
     view === VIEW.FORM    ? <InputForm setResults={handleResults} plantMeta={plantMeta} onReset={handleBack} /> :
                             <LandingPanel onTryIt={() => setView(VIEW.FORM)} />;
 
