@@ -34,3 +34,112 @@ A full-stack web application that models four regulatory transition scenarios fo
 
 ## Project Structure
 
+mecaqc/
+├── backend/
+│   ├── main.py               # FastAPI app and middleware
+│   ├── calculator.py         # Scenario calculation engine
+│   ├── mock_data.py          # Constants and state lookup tables
+│   ├── schema.py             # Pydantic request/response schemas
+│   ├── database.py           # SQLAlchemy engine and session setup
+│   ├── models.py             # ORM model for saved scenarios
+│   ├── routes/
+│   │   ├── scenarios.py      # /scenario/run, /scenario/save, /scenarios
+│   │   └── plants.py         # /plants, /plants/{facilityID}
+│   ├── data/
+│   │   └── plants.csv        # Pre-loaded EPA CAMPD facility data
+│   ├── alembic/              # Database migrations
+│   └── requirements.txt
+├── frontend/
+│   └── src/
+│       ├── App.jsx           # Root component, view state, layout
+│       ├── InputForm.jsx     # 11-field facility input form
+│       ├── ResultsPanel.jsx  # Scenario cards, charts, financials
+│       ├── Map.jsx           # Interactive facility selection map
+│       └── SavedScenarios.jsx# Saved runs list with form re-population
+├── package.json
+└── README.md
+
+
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.9+
+- Node.js 18+
+- PostgreSQL database (or a Supabase project)
+
+### Backend
+
+```bash
+cd backend
+
+# Create a .env file with your database connection string
+echo "DATABASE_URL=postgresql://user:password@host/dbname" > .env
+
+pip install -r requirements.txt
+
+# Run migrations
+alembic upgrade head
+
+# Start the server
+uvicorn main:app --reload
+The API will be available at http://localhost:8000.
+
+Frontend
+
+# From the project root
+npm install
+npm run dev
+The app will be available at http://localhost:5173.
+
+API
+POST /scenario/run
+Accepts facility-level inputs and returns cost-benefit outputs for all four scenarios.
+
+Request body
+
+
+{
+  "state": "AL",
+  "capacity": 403,
+  "heatInput": 1598916,
+  "annualGeneration": 166714,
+  "SO2Rate": 0.6,
+  "operatingHours": 8760,
+  "baselineSO2": 953,
+  "baselineNOx": 227,
+  "baselinePM25": 71.6,
+  "baselineVOC": 4.1,
+  "baselineCO2": 164046
+}
+Response
+
+Returns scenario results for BAU, GT, RT, and AC including net benefit, total annual cost (TAC), and per-pollutant emission changes.
+
+POST /scenario/save
+Persists a facility input and its computed results to the database.
+
+GET /scenarios
+Returns all saved scenario runs with key summary fields (state, capacity, per-scenario net benefits, timestamps).
+
+GET /plants / GET /plants/{facilityID}
+Returns pre-loaded EPA CAMPD facility records for map-based selection.
+
+Scenarios
+Scenario	Description	Status
+BAU	Business as Usual	✅ Verified
+GT	Gas Transition	✅ Verified
+RT	Renewables Transition	✅ Verified
+AC	Add-on Controls	✅ Verified
+Methodology
+Emissions and cost calculations follow the peer-reviewed methodology from:
+
+Wu, S., et al. (2024). Health and climate benefits of different energy transition scenarios for coal-fired power plants in the United States. Environmental Research Letters.
+
+Cost factors are sourced from EPA and EIA datasets and adjusted by state using regional multipliers. The AC scenario uses a capital recovery factor of 2.5% per EPA Control Cost Manual (Ch. 2), verified against the Barry plant reference case in Wu et al. 2024. All costs are reported in 2020 dollars.
+
+Acknowledgements
+Developed as part of the Holloway Group at the University of Wisconsin–Madison, a NASA-affiliated atmospheric science research lab. Special thanks to Dr. Xinran Wu, Dr. Tracey Holloway, and Vedaa Vandavasi.
