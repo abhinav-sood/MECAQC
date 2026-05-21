@@ -75,55 +75,51 @@ def calculateAC(input: PlantInput) -> ScenarioResult:
         CO2ChangePerYear=deltaEmissionsCO2
     )
 
-    # TAC 
     hr = input.heatInput / input.annualGeneration
-    S = input.SO2Rate * (input.heatInput / input.annualGeneration) / 20
-    EF = .98
+    S = input.SO2Rate * hr / 20
+    EF = 0.98
     HRF = hr / 10
-    F = input.capacity * .4
+    F = input.capacity * 0.4
     cost_aj = stateEnergyConstants[input.state]["cost_aj_NG"]
 
-    ABScost = 584000 * (input.capacity**0.716) * (COAL_FACTOR * HRF)**0.6 * (S / 2)**.02 * RETROFIT_FACTOR
-    RPECost = 202000 * (input.capacity**.716) * (S * HRF)**.3
-    WHECost = 106000 * (input.capacity**.716) * (S * HRF)**.45
+    ABScost = 584000 * (input.capacity**0.716) * (COAL_FACTOR * HRF)**0.6 * (S / 2)**0.02 * RETROFIT_FACTOR
+    RPECost = 202000 * (input.capacity**0.716) * (S * HRF)**0.3
+    WHECost = 106000 * (input.capacity**0.716) * (S * HRF)**0.45
     BOPCost = 1070000 * (input.capacity**0.716) * (COAL_FACTOR * HRF)**0.4 * RETROFIT_FACTOR
-    WWTcost = (41.36 * F + 11157588) * RETROFIT_FACTOR * .898
+    WWTcost = (41.36 * F + 11157588) * RETROFIT_FACTOR * 0.898
 
-    #TCI sub-components
     TCI = 1.3 * (ABScost + RPECost + WHECost + BOPCost) + WWTcost
     TCIAdjusted = TCI
 
-    #Consumable rates (per hour)
-    QLimestone = (17.52 * input.capacity * S * HRF / 2000) * (EF/.98) #tons/hr
-    P_elec = .0112 * math.exp(0.155 * S) * COAL_FACTOR * HRF * input.capacity * 1000 # kW
-    qwater = (1.674 * S + 74.68) * input.capacity * COAL_FACTOR * HRF / 1000 #kgal/hr
-    qwaste = 1.811* QLimestone * (EF/.98) # tons/hr
+    QLimestone = (17.52 * input.capacity * S * HRF / 2000) * (EF / 0.98)
+    P_elec = 0.0112 * math.exp(0.155 * S) * COAL_FACTOR * HRF * input.capacity * 1000
+    qwater = (1.674 * S + 74.68) * input.capacity * COAL_FACTOR * HRF / 1000
+    qwaste = 1.811 * QLimestone * (EF / 0.98)
 
-    #Direct Annual Costs(DAC)
-    maitCost = .015 * TCIAdjusted * cost_aj
-    OperatorCost = FT_OPERATORS_FGD * 2080 * LABOR_RATE_FGD * cost_aj
-    ReagentCost = QLimestone * COST_LIMESTONE * input.operatingHours
+    maitCost       = 0.015 * TCIAdjusted
+    OperatorCost   = FT_OPERATORS_FGD * 2080 * LABOR_RATE_FGD * cost_aj
+    ReagentCost    = QLimestone * COST_LIMESTONE * input.operatingHours
     ElectricityCost = P_elec * COST_ELECT_FGD * input.operatingHours
-    WaterCost = qwater * COST_WATER * 1000 * input.operatingHours
-    WasteCost = qwaste * COST_WASTE * input.operatingHours
+    WaterCost      = qwater * COST_WATER * 1000 * input.operatingHours
+    WasteCost      = qwaste * COST_WASTE * input.operatingHours
 
-    CFTotal = (input.annualGeneration / (input.capacity * 8760))
-    WasteWaterCost = (4.847 * F + 479023) * .958 * CFTotal
+    CFTotal = input.annualGeneration / (input.capacity * 8760)
+    WasteWaterCost = (4.847 * F + 479023) * 0.958 * CFTotal
     MercuryMonitor = CRF_mm * MM_COST
 
-    
     DAC = maitCost + OperatorCost + ReagentCost + ElectricityCost + WaterCost + WasteCost + WasteWaterCost + MercuryMonitor
 
-    #Indirect Annual Costs (IDAC)
-    AdminCharges = .03 * (OperatorCost + .4 * maitCost)
-    CRF_FGD = 0.0325 * (1.0325**20) / ((1.0325**20) - 1)  # 3.25%, 30 years ≈ 0.0527
+    AdminCharges = 0.03 * (OperatorCost + 0.4 * maitCost)
+    CRF_FGD = 0.025 * (1.025**20) / ((1.025**20) - 1)
     CapRecovery = CRF_FGD * TCIAdjusted
     IDAC = AdminCharges + CapRecovery
 
     costControl = DAC + IDAC
-    tacAC = costControl + (HEAT_RATE_PENALTY * FUEL_COAL * input.heatInput)
 
-    netBenefit = calculateNetBenefits(reductions, input.state, tacAC)
+    tacBAU = calculateBAU(input).netBenefits.totalAnnualCost
+    tacAC = costControl
+
+    netBenefit   = calculateNetBenefits(reductions, input.state, tacAC)
     totalBenefit = netBenefit + tacAC
 
     return ScenarioResult(
@@ -135,7 +131,6 @@ def calculateAC(input: PlantInput) -> ScenarioResult:
             netBenefit=netBenefit
         )
     )
-
 
 def calculateGT(input: PlantInput) -> ScenarioResult:
     ec = stateEnergyConstants[input.state]
