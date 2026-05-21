@@ -181,11 +181,7 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
       }
     }
     setLoading(true);
-    try {
-      const response = await fetch(API_URL + '/scenario/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+    const plantInput = {
           ...formData,
           capacity:         parseInt(formData.capacity),
           heatInput:        Number(formData.heatInput),
@@ -197,7 +193,12 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
           baselinePM25:     Number(formData.baselinePM25),
           baselineVOC:      Number(formData.baselineVOC),
           baselineCO2:      Number(formData.baselineCO2),
-        }),
+        };
+    try {
+      const response = await fetch(API_URL + '/scenario/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(plantInput),
       });
       if (!response.ok) {
         const err = await response.json();
@@ -205,7 +206,7 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
         return;
       }
       const data = await response.json();
-      setResults(data);
+      setResults(data, plantInput);
     } catch (err) {
       setError('Could not reach the backend. Is uvicorn running?');
       console.error(err);
@@ -293,6 +294,9 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
           <button type="button" onClick={handleResetClick} style={S.resetBtn}>
             Clear &amp; reset
           </button>
+          <p style={{ margin: '12px 0 0', fontSize: 11, color: C.textMuted, fontFamily: FONT, textAlign: 'center' }}>
+        ↓ Scroll to see saved scenarios
+      </p>
         </div>
       </form>
     </div>

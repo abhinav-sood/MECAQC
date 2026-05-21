@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const SCENARIOS = [
   { key: 'bau', label: 'BAU', name: 'Business as Usual', color: '#6B7280' },
   { key: 'ac',  label: 'AC',  name: 'Add-on Scrubber',   color: '#B45309' },
@@ -78,13 +80,37 @@ function BarRow({ label, value, maxAbs, color }) {
   );
 }
 
-export default function ResultsPanel({ results, plantMeta }) {
+export default function ResultsPanel({ results, plantMeta, plantInput }) {
   const [selected, setSelected] = useState('rt');
+  const [saveStatus, setSaveStatus] = useState(null);
   const scenario = results[selected];
   const scenarioDef = SCENARIOS.find(s => s.key === selected);
   const accentColor = scenarioDef?.color ?? C.accent;
 
   const maxRedAbs = Math.max(...POLLUTANTS.map(p => Math.abs(scenario.reductions?.[p.key] ?? 0)));
+
+  async function handleSave() {
+    try {
+      const response = await fetch(API_URL + '/scenario/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plant_input: plantInput,
+          all_scenario_result: results,
+        }),
+      });
+      if (!response.ok) {
+        setSaveStatus("error");
+        return;
+      }
+      setSaveStatus("saved");  
+      
+    } catch (err) {
+      setSaveStatus("error");
+    }
+  } 
+
+
 
   return (
     <div style={{
@@ -115,6 +141,21 @@ export default function ResultsPanel({ results, plantMeta }) {
                 color: C.textSecondary, fontFamily: FONT,
               }}>{tag}</span>
             ))}
+            <button
+                  onClick={handleSave}
+                  style={{
+                    fontSize: 11,
+                    padding: '3px 12px',
+                    borderRadius: 999,
+                    border: '1px solid ' + C.badgeBorder,
+                    background: saveStatus === 'saved' ? C.accentLight : C.surface,
+                    color: saveStatus === 'error' ? C.neg : C.accent,
+                    cursor: 'pointer',
+                    fontFamily: FONT,
+                  }}
+                >
+                  {saveStatus === 'saved' ? 'Saved ✓' : saveStatus === 'error' ? 'Error — retry' : 'Save'}
+                </button>
           </div>
         )}
       </div>
