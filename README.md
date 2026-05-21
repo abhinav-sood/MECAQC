@@ -34,6 +34,7 @@ A full-stack web application that models four regulatory transition scenarios fo
 
 ## Project Structure
 
+```
 mecaqc/
 ├── backend/
 │   ├── main.py               # FastAPI app and middleware
@@ -58,8 +59,7 @@ mecaqc/
 │       └── SavedScenarios.jsx# Saved runs list with form re-population
 ├── package.json
 └── README.md
-
-
+```
 
 ---
 
@@ -86,22 +86,31 @@ alembic upgrade head
 
 # Start the server
 uvicorn main:app --reload
-The API will be available at http://localhost:8000.
+```
 
-Frontend
+The API will be available at `http://localhost:8000`.
 
+### Frontend
+
+```bash
 # From the project root
 npm install
 npm run dev
-The app will be available at http://localhost:5173.
+```
 
-API
-POST /scenario/run
+The app will be available at `http://localhost:5173`.
+
+---
+
+## API
+
+### `POST /scenario/run`
+
 Accepts facility-level inputs and returns cost-benefit outputs for all four scenarios.
 
-Request body
+**Request body**
 
-
+```json
 {
   "state": "AL",
   "capacity": 403,
@@ -115,31 +124,49 @@ Request body
   "baselineVOC": 4.1,
   "baselineCO2": 164046
 }
-Response
+```
+
+**Response**
 
 Returns scenario results for BAU, GT, RT, and AC including net benefit, total annual cost (TAC), and per-pollutant emission changes.
 
-POST /scenario/save
+---
+
+### `POST /scenario/save`
+
 Persists a facility input and its computed results to the database.
 
-GET /scenarios
+### `GET /scenarios`
+
 Returns all saved scenario runs with key summary fields (state, capacity, per-scenario net benefits, timestamps).
 
-GET /plants / GET /plants/{facilityID}
+### `GET /plants` / `GET /plants/{facilityID}`
+
 Returns pre-loaded EPA CAMPD facility records for map-based selection.
 
-Scenarios
-Scenario	Description	Status
-BAU	Business as Usual	✅ Verified
-GT	Gas Transition	✅ Verified
-RT	Renewables Transition	✅ Verified
-AC	Add-on Controls	✅ Verified
-Methodology
+---
+
+## Scenarios
+
+| Scenario | Description | Status |
+|---|---|---|
+| BAU | Business as Usual | ✅ Verified |
+| GT | Gas Transition | ✅ Verified |
+| RT | Renewables Transition | ✅ Verified |
+| AC | Add-on Controls | ✅ Verified |
+
+---
+
+## Methodology
+
 Emissions and cost calculations follow the peer-reviewed methodology from:
 
-Wu, S., et al. (2024). Health and climate benefits of different energy transition scenarios for coal-fired power plants in the United States. Environmental Research Letters.
+> Wu, S., et al. (2024). Health and climate benefits of different energy transition scenarios for coal-fired power plants in the United States. *Environmental Research Letters.*
 
-Cost factors are sourced from EPA and EIA datasets and adjusted by state using regional multipliers. The AC scenario uses a capital recovery factor of 2.5% per EPA Control Cost Manual (Ch. 2), verified against the Barry plant reference case in Wu et al. 2024. All costs are reported in 2020 dollars.
+Cost factors are sourced from EPA and EIA datasets and adjusted by state using regional multipliers. The AC scenario uses a capital recovery factor of 2.5% per EPA Control Cost Manual (Ch. 2), verified against the Barry plant reference case in Wu et al. 2024. All costs are reported in **2020 dollars**.
 
-Acknowledgements
-Developed as part of the Holloway Group at the University of Wisconsin–Madison, a NASA-affiliated atmospheric science research lab. Special thanks to Dr. Xinran Wu, Dr. Tracey Holloway, and Vedaa Vandavasi.
+---
+
+## Acknowledgements
+
+Developed as part of the [Holloway Group](https://hollowaygroup.org) at the University of Wisconsin–Madison, a NASA-affiliated atmospheric science research lab. Special thanks to Dr. Xinran Wu, Dr. Tracey Holloway, and Vedaa Vandavasi.
