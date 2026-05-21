@@ -83,16 +83,23 @@ def saveScenario(inputData: SaveRequest, db: Session = Depends(get_db)):
 
 class ScenarioSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-
     state: str
     capacity: int
     created_at: datetime
+    annualGeneration: Optional[float] = None
+    heatInput: Optional[float] = None
+    SO2Rate: Optional[float] = None
+    operatingHours: Optional[float] = None
+    baselineSO2: Optional[float] = None
+    baselineNOx: Optional[float] = None
+    baselinePM25: Optional[float] = None
+    baselineVOC: Optional[float] = None
+    baselineCO2: Optional[float] = None
     bau_netBenefit: Optional[float] = None
     ac_netBenefit: Optional[float] = None
     gt_netBenefit: Optional[float] = None
     rt_netBenefit: Optional[float] = None
     
-
 @router.get("/scenarios", response_model = List[ScenarioSummary])
 def getScenario(db: Session = Depends(get_db)):
     return db.query(Scenario).all()

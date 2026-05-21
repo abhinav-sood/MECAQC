@@ -294,6 +294,9 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
           <button type="button" onClick={handleResetClick} style={S.resetBtn}>
             Clear &amp; reset
           </button>
+          <p style={{ margin: '12px 0 0', fontSize: 11, color: C.textMuted, fontFamily: FONT, textAlign: 'center' }}>
+        ↓ Scroll to see saved scenarios
+      </p>
         </div>
       </form>
     </div>

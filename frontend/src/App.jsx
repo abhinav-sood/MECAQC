@@ -2,6 +2,7 @@ import { useState } from 'react';
 import InputForm from './InputForm';
 import ResultsPanel from './ResultsPanel';
 import Map from './Map';
+import SavedScenarios from './SavedScenarios';
 
 const C = {
   bg:          '#E8E4DC',
@@ -27,7 +28,6 @@ const STEPS = [
 ];
 
 const POLLUTANTS = ['SO2', 'NOx', 'PM2.5', 'VOC', 'CO2'];
-
 
 const VIEW = { LANDING: 'landing', FORM: 'form', RESULTS: 'results' };
 
@@ -169,14 +169,13 @@ export default function App() {
   const [view, setView]           = useState(VIEW.LANDING);
   const [results, setResults]     = useState(null);
   const [plantMeta, setPlantMeta] = useState(null);
-  const [plantInput, setPlantInput] = useState(null); 
+  const [plantInput, setPlantInput] = useState(null);
 
   function handleResults(data, meta) {
-    if (meta) 
-      {
-        setPlantMeta(meta);
-        setPlantInput(meta); 
-      }
+    if (meta) {
+      setPlantMeta(meta);
+      setPlantInput(meta);
+    }
     if (data) {
       setResults(data);
       setView(VIEW.RESULTS);
@@ -185,8 +184,13 @@ export default function App() {
     }
   }
 
+  // Called when user clicks a saved scenario row.
+  // Passes partial plant data as meta (no results) → goes to FORM view pre-populated.
+  function handleSavedSelect(partialMeta) {
+    handleResults(null, partialMeta);
+  }
+
   function handleBack() {
-    // From results -> back to form; from form -> back to form (reset fields)
     setResults(null);
     setView(VIEW.FORM);
   }
@@ -198,7 +202,7 @@ export default function App() {
   }
 
   const rightPanel =
-    view === VIEW.RESULTS ? <ResultsPanel results={results} plantMeta={plantMeta} plantInput={plantInput}/> :
+    view === VIEW.RESULTS ? <ResultsPanel results={results} plantMeta={plantMeta} plantInput={plantInput} /> :
     view === VIEW.FORM    ? <InputForm setResults={handleResults} plantMeta={plantMeta} onReset={handleBack} /> :
                             <LandingPanel onTryIt={() => setView(VIEW.FORM)} />;
 
@@ -206,10 +210,16 @@ export default function App() {
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: FONT }}>
       <div style={{ padding: '32px 10%' }}>
         <TopBar view={view} onBack={handleBack} onAbout={handleAbout} />
+
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'start' }}>
+        {/* Left column: map + saved scenarios stacked */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <Map onResults={handleResults} />
-          {rightPanel}
+          <SavedScenarios onSelect={handleSavedSelect} />
         </div>
+        {/* Right column: form or results */}
+        {rightPanel}
+      </div>
       </div>
     </div>
   );
