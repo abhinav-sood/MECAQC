@@ -173,6 +173,10 @@ bptByState = {
     "WY": {"SO2": 27750,  "NOx": 19740, "VOC": 2400, "PM25": 13555,  "SCC": 185},
 }
 
+# AC scrubber capital and O&M
+DISCOUNT_RATE_FGD = 0.025   # 2.5% — EPA Control Cost Manual Ch. 2, wetFGD
+EQUIP_LIFE_FGD    = 20      # years — EPA Control Cost Manual Ch. 2
+
 # ── State-specific energy constants — Table S2.4 ──────────────────────────────
 # Source: EPA eGRID 2020, cited in SI footnote 2
 # Confirmed against zip uncontrolled_cost_benefits sheet
