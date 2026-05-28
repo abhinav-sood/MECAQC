@@ -214,7 +214,23 @@ export default function App() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'start' }}>
         {/* Left column: map + saved scenarios stacked */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <Map onResults={handleResults} />
+          {view === VIEW.LANDING ? (
+            <div style={{
+              height: '100vh',
+              borderRadius: 8,
+              background: C.surface,
+              border: '1px solid ' + C.border,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: 13, color: C.textMuted, fontFamily: FONT }}>
+                Map loads when you try it out
+              </span>
+            </div>
+          ) : (
+            <Map onResults={handleResults} />
+          )}
           <SavedScenarios onSelect={handleSavedSelect} />
         </div>
         {/* Right column: form or results */}
