@@ -255,26 +255,25 @@ export default function ResultsPanel({ results, plantMeta, plantInput }) {
             marginBottom: 14, padding: '12px 14px',
             background: C.surface, borderRadius: 7,
             border: '1px solid ' + accentColor + '44',
-          }}>
-            <div style={{ fontSize: 10.5, color: C.textMuted, marginBottom: 3 }}>Net benefit / year</div>
+            }}>
+            <div style={{ fontSize: 10.5, color: C.textMuted, marginBottom: 3 }}>Health & climate benefit / year</div>
             <div style={{
               fontSize: 26, fontWeight: 700, fontFamily: 'monospace',
-              color: scenario.netBenefits.netBenefit >= 0 ? accentColor : C.neg,
+              color: accentColor,
             }}>
-              {fmt$(scenario.netBenefits.netBenefit)}
+              {fmt$(scenario.netBenefits.totalBenefit)}
             </div>
           </div>
 
           {/* Row breakdown */}
           {[
-            { label: 'Health & climate benefit', value: scenario.netBenefits.totalBenefit,     pos: true },
             { label: 'Total annual cost (TAC)',   value: scenario.netBenefits.totalAnnualCost, pos: scenario.netBenefits.totalAnnualCost <= 0 },
-            { label: 'Net benefit',               value: scenario.netBenefits.netBenefit,       pos: scenario.netBenefits.netBenefit >= 0 },
+            { label: 'Net benefit',               value: scenario.netBenefits.netBenefit,      pos: scenario.netBenefits.netBenefit >= 0 },
           ].map((row, i) => (
             <div key={i} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               padding: '8px 0',
-              borderBottom: i < 2 ? '1px solid ' + C.borderLight : 'none',
+              borderBottom: i < 1 ? '1px solid ' + C.borderLight : 'none',
             }}>
               <span style={{ fontSize: 12, color: C.textSecondary }}>{row.label}</span>
               <span style={{ fontSize: 12.5, fontWeight: 600, fontFamily: 'monospace', color: row.pos ? accentColor : C.neg }}>
