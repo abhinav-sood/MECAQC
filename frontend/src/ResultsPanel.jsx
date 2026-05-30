@@ -83,12 +83,48 @@ function BarRow({ label, value, maxAbs, color }) {
 export default function ResultsPanel({ results, plantMeta, plantInput }) {
   const [selected, setSelected] = useState('rt');
   const [saveStatus, setSaveStatus] = useState(null);
+  const [downloadStatus, setDownloadStatus] = useState(null);
   const scenario = results[selected];
   const scenarioDef = SCENARIOS.find(s => s.key === selected);
   const accentColor = scenarioDef?.color ?? C.accent;
 
   const maxRedAbs = Math.max(...POLLUTANTS.map(p => Math.abs(scenario.reductions?.[p.key] ?? 0)));
+  function handleDownload() {
+    const rows = [];
+    
+    rows.push(['Scenario', 'Pollutant', 'Emission Change (t/yr)', 'Health & Climate Benefit ($/yr)', 'Total Annual Cost ($/yr)', 'Net Benefit ($/yr)']);
 
+    //2. loop over each scenario
+    SCENARIOS.forEach(s => {
+      //3. loop over each pollutant
+      POLLUTANTS.forEach(p => {
+        //4. push one row per scenario/pollutant combo
+       rows.push([
+          s.label,                                   
+          p.label,                                  
+          results[s.key].reductions[p.key],           
+          results[s.key].netBenefits.totalBenefit,    
+          results[s.key].netBenefits.totalAnnualCost, 
+          results[s.key].netBenefits.netBenefit,      
+        ]);
+      });
+    });
+
+    //5. convert rows array to CSV string
+    const csv = rows.map(r => r.join(',')).join('\n');
+    //6. create a Blob from the string
+    const blob = new Blob([csv], { type: 'text/csv' });
+    //7. create a temporary <a> element, click it, remove it
+    const objectURL = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = objectURL;
+    link.download = 'scenarios.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); 
+    URL.revokeObjectURL(objectURL);
+    setDownloadStatus('downloaded');
+  }
   async function handleSave() {
     try {
       const response = await fetch(API_URL + '/scenario/save', {
@@ -155,6 +191,21 @@ export default function ResultsPanel({ results, plantMeta, plantInput }) {
                   }}
                 >
                   {saveStatus === 'saved' ? 'Saved ✓' : saveStatus === 'error' ? 'Error — retry' : 'Save'}
+                </button>
+            <button
+              onClick = {handleDownload}
+              style={{
+                    fontSize: 11,
+                    padding: '3px 12px',
+                    borderRadius: 999,
+                    border: '1px solid ' + C.badgeBorder,
+                    background: downloadStatus === 'downloaded' ? C.accentLight : C.surface,
+                    color: downloadStatus === 'error' ? C.neg : C.accent,
+                    cursor: 'pointer',
+                    fontFamily: FONT,
+                  }}
+                >
+                  {downloadStatus === 'downloaded' ? 'Downloaded ✓' : downloadStatus === 'error' ? 'Error — retry' : 'Download'}
                 </button>
           </div>
         )}
@@ -281,6 +332,7 @@ export default function ResultsPanel({ results, plantMeta, plantInput }) {
               </span>
             </div>
           ))}
+
 
           <p style={{ marginTop: 12, fontSize: 11, color: C.textMuted, lineHeight: 1.6 }}>
             All costs in 2020 USD. Wu et al. 2024, ERL.
