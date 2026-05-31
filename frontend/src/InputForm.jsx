@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const FIELDS = [
   { name: 'state',            label: 'State',              hint: 'Two-letter code',       placeholder: 'e.g. AL',      half: true,  type: 'string' },
-  { name: 'capacity',         label: 'Nameplate capacity', hint: 'MW',                    placeholder: 'e.g. 403',     half: true,  type: 'number' },
+  { name: 'capacity',         label: 'Nameplate capacity', hint: 'MW',                    placeholder: 'e.g. 403.8',     half: true,  type: 'number' },
   { name: 'heatInput',        label: 'Annual heat input',  hint: 'MMBtu/yr — from CAMPD', placeholder: 'e.g. 1598916', half: true,  type: 'number' },
   { name: 'annualGeneration', label: 'Annual generation',  hint: 'MWh/yr — from CAMPD',   placeholder: 'e.g. 166714',  half: true,  type: 'number' },
   { name: 'SO2Rate',          label: 'SO₂ rate',           hint: 'lbs/MMBtu',             placeholder: 'e.g. 1.10',    half: true,  type: 'number' },
