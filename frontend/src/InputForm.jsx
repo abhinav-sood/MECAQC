@@ -142,13 +142,13 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
       capacity:         plantMeta.capacity,
       heatInput:        plantMeta.heatInput,
       annualGeneration: plantMeta.annualGeneration,
-      SO2Rate:          plantMeta.so2Rate,
+      SO2Rate:          plantMeta.SO2Rate,
       operatingHours:   plantMeta.operatingHours,
-      baselineSO2:      plantMeta.so2Mass,
-      baselineNOx:      plantMeta.noxMass,
-      baselinePM25:     plantMeta.pm25,
-      baselineVOC:      plantMeta.voc,
-      baselineCO2:      plantMeta.co2Mass,
+      baselineSO2:      plantMeta.baselineSO2,
+      baselineNOx:      plantMeta.baselineNOx,
+      baselinePM25:     plantMeta.baselinePM25,
+      baselineVOC:      plantMeta.baselineVOC,
+      baselineCO2:      plantMeta.baselineCO2,
     });
   }, [plantMeta]);
 
@@ -183,7 +183,7 @@ export default function InputForm({ setResults, plantMeta, onReset }) {
     setLoading(true);
     const plantInput = {
           ...formData,
-          capacity:         parseInt(formData.capacity),
+          capacity:         Number(formData.capacity),
           heatInput:        Number(formData.heatInput),
           annualGeneration: Number(formData.annualGeneration),
           SO2Rate:          Number(formData.SO2Rate),
