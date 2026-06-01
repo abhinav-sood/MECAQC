@@ -1,4 +1,4 @@
-facilityID,facilityName,state,capacity,annualGeneration,heatInput,operatingHours,so2Rate,so2Mass,noxMass,co2Mass,pm25,voc,PlantCode,Latitude,Longitude
+facilityID,facilityName,state,capacity,annualGeneration,heatInput,operatingHours,SO2Rate,baselineSO2,baselineNOx,baselineCO2,baselinePM25,baselineVOC,PlantCode,Latitude,Longitude
 3,Barry,AL,403.8,166714.5,1598916.5,910.0,1.1014,952.988,227.051,164045.75,71.5693988,4.10054106,3,31.0069,-88.0103
 60,Gerald Whelan Energy Center,NE,77.0,372205.56,4181644.53,7793.16,0.7827,1640.619,324.515,438571.818,20.3436756,13.110406,60,40.580872,-98.312437
 568,Bridgeport Harbor Station,CT,400.0,3774.83,47149.494,58.59,0.0724,4.005,3.749,4944.928,10.91966,19.67047302,568,41.1706,-73.1844
