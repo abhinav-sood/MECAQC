@@ -2,7 +2,7 @@ import { useState } from 'react';
 import InputForm from './InputForm';
 import ResultsPanel from './ResultsPanel';
 import Map from './Map';
-import SavedScenarios from './SavedScenarios';
+
 
 const C = {
   bg:          '#E8E4DC',
@@ -186,10 +186,7 @@ export default function App() {
 
   // Called when user clicks a saved scenario row.
   // Passes partial plant data as meta (no results) → goes to FORM view pre-populated.
-  function handleSavedSelect(partialMeta) {
-    handleResults(null, partialMeta);
-  }
-
+ 
   function handleBack() {
     setResults(null);
     setView(VIEW.FORM);
@@ -231,7 +228,6 @@ export default function App() {
           ) : (
             <Map onResults={handleResults} />
           )}
-          <SavedScenarios onSelect={handleSavedSelect} />
         </div>
         {/* Right column: form or results */}
         {rightPanel}
