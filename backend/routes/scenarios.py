@@ -20,6 +20,7 @@ class SaveRequest(BaseModel):
     plant_input: PlantInput
     all_scenario_result: Optional[AllScenariosResult] = None
 
+#Removed from frontend logic. keep if needed in the future
 @router.post("/scenario/save")
 def saveScenario(inputData: SaveRequest, db: Session = Depends(get_db)):
     scenario = Scenario(
