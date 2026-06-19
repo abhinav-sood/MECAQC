@@ -35,7 +35,7 @@ def test_rt():
     
 def test_ac():
     ACval = calculateAC(plant)
-    assert abs(ACval.netBenefits.totalAnnualCost - 16_665_443.66) < 50_000
+    assert abs(ACval.netBenefits.totalAnnualCost - 16_720_436) < 50_000
 
 def test_gt_net_benefit():
     GTval = calculateGT(plant)

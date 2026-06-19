@@ -65,7 +65,7 @@ def calculateAC(input: PlantInput) -> ScenarioResult:
     deltaEmissionsNOx  = -(input.baselineNOx  * heatRatePenalty)
     deltaEmissionsPM25 = -(input.baselinePM25 * heatRatePenalty)
     deltaEmissionsCO2  = -(input.baselineCO2  * heatRatePenalty)
-    deltaEmissionsVOC  = 0.0 if scrubberType == "SDA" else -(input.baselineVOC * heatRatePenalty)
+    deltaEmissionsVOC = -(input.baselineVOC * heatRatePenalty)
 
     reductions = ReductionOutput(
         SO2ChangePerYear=deltaEmissionsSO2,
@@ -117,7 +117,7 @@ def calculateAC(input: PlantInput) -> ScenarioResult:
     costControl = DAC + IDAC
 
     tacBAU = calculateBAU(input).netBenefits.totalAnnualCost
-    tacAC = costControl
+    tacAC = costControl + FUEL_COAL * input.heatInput * 0.0163
 
     netBenefit   = calculateNetBenefits(reductions, input.state, tacAC)
     totalBenefit = netBenefit + tacAC
